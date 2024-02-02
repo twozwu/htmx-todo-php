@@ -23,6 +23,7 @@ class Todo {
         return self::from_array( $todo, $db );
     }
 
+    // 接收參數用
     public static function from_array( array $todo, ?PDO $db = null ) {
         return new Todo(
             id: $todo["id"],
@@ -51,6 +52,7 @@ class Todo {
             ":category" => $this->category,
         ] );
 
+        // lastInsertId()：取得最後新增一筆的資料
         $this->id = $this->db->lastInsertId();
     }
 
@@ -58,7 +60,7 @@ class Todo {
         $stmt = $this->db->prepare( "UPDATE todos SET done = :done WHERE id = :id LIMIT 1" );
         $stmt->execute( [
             ":id" => $this->id,
-            ":done" => intval( $done ),
+            ":done" => intval( $done ), // 將布林值轉換為整數
         ] );
 
         $this->done = $done;
